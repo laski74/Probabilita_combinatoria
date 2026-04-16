@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Esercizi — Probabilità e Calcolo Combinatorio (pag. 1425–1427)</title>
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['\\(','\\)'],['$','$']], displayMath: [['\\[','\\]'],['$$','$$']] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    /* =========================================
+       VARIABILI
+    ========================================= */
+    :root {
+      --pri:    #1a6bb5;
+      --pri-dk: #124d84;
+      --acc:    #e67e22;
+      --grn:    #27ae60;
+      --red:    #c0392b;
+      --pur:    #8e44ad;
+      --bg:     #f4f6f9;
+      --card:   #ffffff;
+      --txt:    #2c3e50;
+      --lt:     #6c757d;
+      --bdr:    #dee2e6;
+      --sh:     0 2px 10px rgba(0,0,0,.08);
+      --r:      10px;
+      --ff:     'Segoe UI', Arial, sans-serif;
+      --fs:     15.5px;
+      --lh:     1.7;
+    }
+    body.dsa {
+      --ff: Arial, sans-serif;
+      --fs: 18px;
+      --lh: 2.1;
+      --bg: #fffdf5;
+    }
+
+    /* =========================================
+       BASE
+    ========================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--ff); font-size: var(--fs); line-height: var(--lh); color: var(--txt); background: var(--bg); }
+    body.dsa * { letter-spacing: .03em; word-spacing: .06em; }
+    p { margin-bottom: .85em; }
+    ul, ol { margin: .4em 0 .8em 1.5em; }
+    li { margin-bottom: .3em; }
+
+    /* =========================================
+       HEADER
+    ========================================= */
+    header {
+      background: linear-gradient(135deg, var(--pri-dk), var(--pri));
+      color: #fff; padding: 1.8rem 2rem 1.4rem; position: relative;
+    }
+    header h1 { font-size: 1.6em; margin-bottom: .3em; }
+    header p  { opacity: .88; font-size: .92em; }
+    .chips { display:flex; flex-wrap:wrap; gap:.4em; margin-top:.8em; }
+    .chip  { background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3); border-radius:20px; padding:.15em .75em; font-size:.8em; }
+
+    /* DSA toggle */
+    .dsa-wrap { position:absolute; top:1.1rem; right:1.4rem; display:flex; align-items:center; gap:.5em; }
+    .dsa-wrap label { color:#fff; font-size:.83em; cursor:pointer; font-weight:600; }
+    .sw { position:relative; width:44px; height:22px; display:inline-block; }
+    .sw input { opacity:0; width:0; height:0; }
+    .sl { position:absolute; cursor:pointer; inset:0; background:rgba(255,255,255,.3); border-radius:22px; transition:.3s; }
+    .sl:before { content:""; position:absolute; width:16px; height:16px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.3s; }
+    input:checked + .sl { background:var(--grn); }
+    input:checked + .sl:before { transform:translateX(22px); }
+
+    /* =========================================
+       NAVIGAZIONE SEZIONI
+    ========================================= */
+    nav.toc {
+      background:#fff; border-bottom:2px solid var(--bdr); padding:.6em 1.5rem;
+      display:flex; flex-wrap:wrap; gap:.3em .9em; align-items:center;
+      position:sticky; top:0; z-index:100; box-shadow:0 2px 5px rgba(0,0,0,.05);
+    }
+    nav.toc span { color:var(--lt); font-size:.8em; }
+    nav.toc a { color:var(--pri); text-decoration:none; font-size:.84em; font-weight:600; padding:.15em .4em; border-radius:4px; transition:background .2s; white-space:nowrap; }
+    nav.toc a:hover { background:var(--bg); }
+
+    /* =========================================
+       MAIN
+    ========================================= */
+    main { max-width:860px; margin:0 auto; padding:1.8rem 1.4rem 4rem; }
+    section { margin-bottom:2.5rem; scroll-margin-top:58px; }
+
+    /* sezione header */
+    .sec-hdr {
+      display:flex; align-items:center; gap:.6em;
+      border-bottom:3px solid var(--pri); padding-bottom:.5em; margin-bottom:1.3em;
+    }
+    .sec-num { background:var(--pri); color:#fff; border-radius:50%; width:2em; height:2em; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0; }
+    .sec-hdr h2 { font-size:1.2em; color:var(--pri-dk); }
+
+    /* =========================================
+       ESERCIZIO CARD
+    ========================================= */
+    .ez {
+      background:var(--card); border-radius:var(--r);
+      border:1px solid var(--bdr); box-shadow:var(--sh);
+      padding:1.2em 1.3em; margin-bottom:1.4em;
+      position:relative;
+    }
+
+    /* badge numero esercizio */
+    .ez-num {
+      display:inline-block; background:var(--pri); color:#fff;
+      border-radius:6px; padding:.1em .6em; font-size:.8em; font-weight:700;
+      margin-bottom:.6em; margin-right:.4em;
+    }
+    .ez-num.guida  { background:var(--acc); }
+    .ez-num.test   { background:var(--pur); }
+    .ez-num.realta { background:var(--grn); }
+
+    /* stelle difficoltà */
+    .stars { color:#f0a500; font-size:.85em; vertical-align:middle; }
+
+    .ez h3 { font-size:1em; color:var(--pri-dk); margin:.1em 0 .6em; display:inline; }
+
+    /* lista sub-esercizi */
+    .sub-list { list-style:none; padding:0; margin:.5em 0 .8em; }
+    .sub-list li { padding:.35em 0 .35em 2em; position:relative; }
+    .sub-list li::before {
+      content:attr(data-l);
+      position:absolute; left:0; font-weight:700; color:var(--pri);
+    }
+    body.dsa .sub-list li { padding:.5em 0 .5em 2.2em; background:#fffbe6; border-radius:4px; margin-bottom:.3em; }
+
+    /* bottoni */
+    .btn-wrap { display:flex; flex-wrap:wrap; gap:.4em; margin-top:.6em; }
+    .btn {
+      border:none; border-radius:6px; padding:.38em .85em;
+      font-size:.84em; font-weight:600; cursor:pointer;
+      transition:opacity .2s, transform .1s;
+    }
+    .btn:hover { opacity:.82; transform:translateY(-1px); }
+    .btn-hint { background:#e3f2fd; color:#1565c0; }
+    .btn-sol  { background:#e8f5e9; color:#2e7d32; }
+    .btn-mc   { background:#f3e5f5; color:#6a1b9a; }
+
+    /* pannelli nascosti */
+    .panel {
+      display:none; margin-top:.75em;
+      border-radius:8px; padding:.85em 1em;
+      animation:fadeIn .28s ease;
+    }
+    .panel.show { display:block; }
+    .panel-hint { background:#e3f2fd; border-left:4px solid #1565c0; }
+    .panel-sol  { background:#e8f5e9; border-left:4px solid #2e7d32; }
+    .panel-mc   { background:#f3e5f5; border-left:4px solid #8e44ad; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(-5px)} to{opacity:1;transform:translateY(0)} }
+
+    /* DSA nota */
+    .dsa-note { display:none; background:#e8f5e9; border:2px dashed var(--grn); border-radius:8px; padding:.8em 1em; margin:.5em 0; font-size:.92em; }
+    body.dsa .dsa-note { display:block; }
+
+    /* step-list per DSA */
+    .steps { counter-reset:s; list-style:none; padding:0; margin:.4em 0; }
+    .steps li { counter-increment:s; padding:.4em .4em .4em 2.4em; position:relative; margin-bottom:.4em; background:#f9f9f9; border-radius:6px; }
+    body.dsa .steps li { background:#fffbe6; padding:.6em .6em .6em 2.8em; }
+    .steps li::before { content:counter(s); position:absolute; left:.5em; top:.4em; background:var(--pri); color:#fff; width:1.4em; height:1.4em; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:700; }
+
+    /* risposta in box */
+    .ans-box { background:var(--pri); color:#fff; border-radius:8px; padding:.7em 1.1em; margin:.5em 0; text-align:center; font-size:1.05em; }
+    .ans-box small { display:block; opacity:.8; font-size:.78em; margin-bottom:.15em; }
+
+    /* riquadro evidenziato */
+    .hl { background:#fff3cd; border-left:4px solid var(--acc); padding:.7em 1em; border-radius:0 6px 6px 0; margin:.6em 0; }
+
+    /* griglia risposte multi */
+    .ans-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:.5em; margin:.5em 0; }
+    .ans-cell { background:#f0faf4; border:1px solid #a8d5b5; border-radius:7px; padding:.5em .7em; text-align:center; font-size:.9em; }
+    .ans-cell strong { display:block; color:var(--grn); font-size:1.1em; }
+
+    /* confronto tabella */
+    .cmp-table { width:100%; border-collapse:collapse; margin:.5em 0; font-size:.9em; }
+    .cmp-table th { background:var(--pri); color:#fff; padding:.5em; }
+    .cmp-table td { border:1px solid var(--bdr); padding:.5em; text-align:center; }
+    .cmp-table tr:nth-child(even) td { background:#f5f7fa; }
+    .cmp-winner { background:#d4edda !important; font-weight:700; color:#155724; }
+
+    /* scelta multipla */
+    .mc-options { display:grid; grid-template-columns:1fr 1fr; gap:.4em; margin:.5em 0; }
+    .mc-opt { border:2px solid var(--bdr); border-radius:8px; padding:.5em .8em; cursor:pointer; transition:border .2s,background .2s; font-size:.92em; }
+    .mc-opt:hover { border-color:var(--pri); background:#eaf4ff; }
+    .mc-opt.correct { border-color:var(--grn); background:#d4edda; }
+    .mc-opt.wrong { border-color:var(--red); background:#f8d7da; }
+    .mc-opt.revealed-correct { border-color:var(--grn); background:#d4edda; }
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+    footer { background:#2c3e50; color:rgba(255,255,255,.7); text-align:center; padding:1.1em; font-size:.8em; }
+
+    /* =========================================
+       PRINT
+    ========================================= */
+    @media print {
+      nav.toc, .dsa-wrap, .btn-wrap { display:none!important; }
+      .panel { display:block!important; }
+      header { background:#1a6bb5!important; -webkit-print-color-adjust:exact; }
+    }
+    @media(max-width:600px){
+      main { padding:1rem; }
+      .mc-options { grid-template-columns:1fr; }
+      .ans-grid { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ==============================
+     HEADER
+============================== -->
+<header>
+  <div class="dsa-wrap">
+    <label for="dsaT">📖 DSA</label>
+    <label class="sw"><input type="checkbox" id="dsaT" onchange="document.body.classList.toggle('dsa',this.checked);if(window.MathJax)MathJax.typesetPromise()"><span class="sl"></span></label>
+  </div>
+  <h1>🎲 Probabilità e Calcolo Combinatorio</h1>
+  <p>Esercizi dal libro di testo — pagine 1425 · 1426 · 1427</p>
+  <div class="chips">
+    <span class="chip">📘 21 esercizi</span>
+    <span class="chip">💡 Suggerimento a scomparsa</span>
+    <span class="chip">✅ Soluzione a scomparsa</span>
+    <span class="chip">📖 Modalità DSA</span>
+    <span class="chip">🖨️ Stampabile</span>
+  </div>
+</header>
+
+<!-- ==============================
+     NAV
+============================== -->
+<nav class="toc">
+  <span>Sezioni:</span>
+  <a href="#s1">A · Complementare</a>
+  <a href="#s2">B · Urne &amp; Carte</a>
+  <a href="#s3">C · Esercizio Guidato</a>
+  <a href="#s4">D · Dadi &amp; Monete</a>
+  <a href="#s5">E · Problemi Reali</a>
+</nav>
+
+<main>
+
+<!-- ============================================================
+     SEZIONE A: EVENTO COMPLEMENTARE
+============================================================ -->
+<section id="s1">
+  <div class="sec-hdr"><div class="sec-num">A</div><h2>Evento complementare</h2></div>
+
+  <!-- Es. 31 -->
+  <div class="ez">
+    <span class="ez-num">Es. 31</span>
+    <span class="stars">★☆☆</span>
+    <p>Si lancia <strong>cinque volte</strong> una moneta. Calcola la probabilità dell'evento
+    \(A =\) «esce al massimo 4 volte testa».</p>
+
+    <div class="dsa-note">
+      <strong>📌 Idea chiave:</strong> è più facile calcolare il complementare di A.<br>
+      Il complementare di "al massimo 4 teste" è "esattamente 5 teste".
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h31')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s31')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h31">
+      Invece di sommare i casi con 0, 1, 2, 3, 4 teste, calcola prima
+      \(P(B)\) dove \(B =\) «escono 5 teste», poi usa \(P(A) = 1 - P(B)\).
+    </div>
+    <div class="panel panel-sol" id="s31">
+      L'evento complementare è \(B =\) «esce testa tutte e 5 le volte»:
+      \[P(B) = \left(\tfrac{1}{2}\right)^5 = \frac{1}{32}\]
+      Poiché \(A = \overline{B}\):
+      \[P(A) = 1 - \frac{1}{32} = \boxed{\dfrac{31}{32} \approx 96{,}9\%}\]
+    </div>
+  </div>
+
+  <!-- Es. 32 -->
+  <div class="ez">
+    <span class="ez-num">Es. 32</span>
+    <span class="stars">★★☆</span>
+    <p>Da un mazzo di <strong>52 carte</strong> se ne estraggono 4,
+    <em>rimettendo</em> la carta estratta nel mazzo dopo ogni estrazione.
+    Calcola la probabilità di:</p>
+    <ul class="sub-list">
+      <li data-l="a.">non estrarre 4 assi;</li>
+      <li data-l="b.">estrarre più di 3 assi;</li>
+      <li data-l="c.">estrarre almeno 3 assi.</li>
+    </ul>
+
+    <div class="dsa-note">
+      <strong>📌 Ricorda:</strong> nel mazzo ci sono 4 assi su 52 carte.<br>
+      La probabilità di estrarre un asso a ogni singola pesca è \(\frac{4}{52} = \frac{1}{13}\).
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h32')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s32')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h32">
+      Con 4 estrazioni indipendenti con reimmissione:<br>
+      \(P(\text{4 assi}) = \left(\tfrac{1}{13}\right)^4 = \tfrac{1}{28561}\).<br>
+      Per c. usa: \(P(\text{esattamente 3 assi}) = \binom{4}{3}\left(\tfrac{1}{13}\right)^3\!\left(\tfrac{12}{13}\right)\).
+    </div>
+    <div class="panel panel-sol" id="s32">
+      Sia \(p = \frac{1}{13}\) la prob. di un asso a ogni pesca.<br><br>
+      <strong>a.</strong> \(P(\text{non 4 assi}) = 1 - P(\text{4 assi}) = 1 - \dfrac{1}{28561} = \dfrac{28560}{28561}\)<br><br>
+      <strong>b.</strong> «più di 3» = esattamente 4 assi:
+      \[P = \left(\tfrac{1}{13}\right)^4 = \dfrac{1}{28561}\]
+      <strong>c.</strong> «almeno 3» = 3 assi + 4 assi:
+      \[P(\text{3 assi}) = \binom{4}{3}\!\cdot\!\left(\tfrac{1}{13}\right)^3\!\!\cdot\tfrac{12}{13} = \frac{48}{28561}\]
+      \[P(\text{almeno 3}) = \frac{48}{28561}+\frac{1}{28561} = \boxed{\dfrac{49}{28561}}\]
+    </div>
+  </div>
+
+  <!-- Es. 42 -->
+  <div class="ez">
+    <span class="ez-num">Es. 42</span>
+    <span class="stars">★☆☆</span>
+    <p>Si lancia <strong>dieci volte</strong> una moneta. Calcola:
+    <ul class="sub-list">
+      <li data-l="a.">la probabilità che non esca mai testa;</li>
+      <li data-l="b.">la probabilità che esca testa almeno una volta.</li>
+    </ul>
+    </p>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h42')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s42')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h42">
+      Per la parte b. usa l'evento complementare: «almeno una testa» = \(1 -\) «nessuna testa».
+    </div>
+    <div class="panel panel-sol" id="s42">
+      <strong>a.</strong> \(P(\text{no testa}) = \left(\dfrac{1}{2}\right)^{10} = \boxed{\dfrac{1}{1024}}\)<br><br>
+      <strong>b.</strong> \(P(\text{almeno una testa}) = 1 - \dfrac{1}{1024} = \boxed{\dfrac{1023}{1024} \approx 99{,}9\%}\)
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SEZIONE B: URNE E CARTE
+============================================================ -->
+<section id="s2">
+  <div class="sec-hdr"><div class="sec-num">B</div><h2>Urne, sacchetti e carte</h2></div>
+
+  <!-- Es. 33 TEST -->
+  <div class="ez">
+    <span class="ez-num test">Es. 33</span>
+    <span style="background:#8e44ad;color:#fff;border-radius:12px;padding:.1em .6em;font-size:.75em;font-weight:700;">TEST</span>
+    <span class="stars" style="margin-left:.3em;">★☆☆</span>
+    <p style="margin-top:.6em;">Un'urna contiene <strong>5 palline bianche</strong> e <strong>3 palline nere</strong>,
+    non distinguibili al tatto. La probabilità che, estraendo <em>contemporaneamente</em>
+    3 palline, esse siano <em>una bianca e due nere</em> è:</p>
+
+    <div class="mc-options" id="mc33">
+      <div class="mc-opt" onclick="checkMC('mc33',this,'wrong')">
+        A &nbsp; \(\dfrac{15}{32}\)
+      </div>
+      <div class="mc-opt" onclick="checkMC('mc33',this,'correct')">
+        B &nbsp; \(\dfrac{15}{56}\)
+      </div>
+      <div class="mc-opt" onclick="checkMC('mc33',this,'wrong')">
+        C &nbsp; \(\dfrac{17}{32}\)
+      </div>
+      <div class="mc-opt" onclick="checkMC('mc33',this,'wrong')">
+        D &nbsp; \(\dfrac{5}{56}\)
+      </div>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-mc" onclick="revealMC('mc33','s33')">🔍 Mostra risposta</button>
+      <button class="btn btn-sol" onclick="tog('s33')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-sol" id="s33">
+      Totale modi di scegliere 3 palline su 8: \(\binom{8}{3} = 56\)<br>
+      Modi favorevoli (1 bianca da 5, 2 nere da 3):
+      \[\binom{5}{1} \cdot \binom{3}{2} = 5 \cdot 3 = 15\]
+      \[P = \dfrac{15}{56} \quad \Rightarrow \textbf{ Risposta B}\]
+    </div>
+  </div>
+
+  <!-- Es. 34 -->
+  <div class="ez">
+    <span class="ez-num">Es. 34</span>
+    <span class="stars">★☆☆</span>
+    <p>In un sacchetto ci sono <strong>dieci palline</strong> numerate da 1 a 10.
+    Si estraggono <strong>tre palline con reimmissione</strong>. Calcola la probabilità che:</p>
+    <ul class="sub-list">
+      <li data-l="a.">nessuna pallina estratta abbia il numero 7;</li>
+      <li data-l="b.">al massimo due palline estratte abbiano il numero 7.</li>
+    </ul>
+
+    <div class="dsa-note">
+      <strong>📌 Con reimmissione:</strong> ogni estrazione è indipendente.<br>
+      P(esce 7 in un singolo lancio) = 1/10 → P(non esce 7) = 9/10.
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h34')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s34')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h34">
+      Per la b., usa il complementare: «al massimo 2 volte il 7» = 1 − «il 7 esce tutte e 3 le volte».
+    </div>
+    <div class="panel panel-sol" id="s34">
+      <strong>a.</strong> \(P(\text{no 7}) = \left(\dfrac{9}{10}\right)^3 = \boxed{\dfrac{729}{1000}}\)<br><br>
+      <strong>b.</strong> Complementare = «il 7 esce tutte e 3 le volte» = \(\left(\dfrac{1}{10}\right)^3 = \dfrac{1}{1000}\)
+      \[P(\text{max 2 volte il 7}) = 1 - \dfrac{1}{1000} = \boxed{\dfrac{999}{1000}}\]
+    </div>
+  </div>
+
+  <!-- Es. 37 -->
+  <div class="ez">
+    <span class="ez-num">Es. 37</span>
+    <span class="stars">★★☆</span>
+    <p>Un'urna contiene <strong>cinque palline</strong> numerate da 1 a 5.
+    Si estraggono <strong>consecutivamente due palline, rimettendo</strong>
+    la prima pallina estratta nell'urna. Calcola la probabilità che:</p>
+    <ul class="sub-list">
+      <li data-l="a.">escano due 5;</li>
+      <li data-l="b.">escano due numeri pari;</li>
+      <li data-l="c.">esca prima un numero pari e poi uno dispari;</li>
+      <li data-l="d.">escano un numero pari e uno dispari (in qualsiasi ordine).</li>
+    </ul>
+
+    <div class="dsa-note">
+      <strong>📌 CON reimmissione:</strong> i casi totali sono le <em>disposizioni con ripetizione</em>
+      \(D_{5,2}^R = 5^2 = 25\).<br>
+      Numeri pari in \(\{1,2,3,4,5\}\): \(\{2,4\}\) — Numeri dispari: \(\{1,3,5\}\)
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h37')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s37')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h37">
+      Casi totali con reimmissione: \(5^2 = 25\).<br>
+      Per d., conta anche lo scambio d'ordine (pari,dispari) e (dispari,pari) → è il doppio della c.
+    </div>
+    <div class="panel panel-sol" id="s37">
+      Casi totali: \(5^2 = 25\). Pari = \(\{2,4\}\), Dispari = \(\{1,3,5\}\).<br><br>
+      <div class="ans-grid">
+        <div class="ans-cell"><small>a. Due 5</small><strong>\(\dfrac{1}{25}\)</strong></div>
+        <div class="ans-cell"><small>b. Due pari</small><strong>\(\dfrac{4}{25}\)</strong></div>
+        <div class="ans-cell"><small>c. Pari poi dispari</small><strong>\(\dfrac{6}{25}\)</strong></div>
+        <div class="ans-cell"><small>d. Pari e dispari</small><strong>\(\dfrac{12}{25}\)</strong></div>
+      </div>
+      <strong>a.</strong> solo la coppia (5,5): 1 caso favorevole → \(\frac{1}{25}\)<br>
+      <strong>b.</strong> \(\{2,4\}\times\{2,4\}\): \(2\times2=4\) casi → \(\frac{4}{25}\)<br>
+      <strong>c.</strong> \(\{2,4\}\times\{1,3,5\}\): \(2\times3=6\) casi → \(\frac{6}{25}\)<br>
+      <strong>d.</strong> pari-poi-dispari + dispari-poi-pari: \(6+6=12\) → \(\frac{12}{25}\)
+    </div>
+  </div>
+
+  <!-- Es. 39 -->
+  <div class="ez">
+    <span class="ez-num">Es. 39</span>
+    <span class="stars">★★☆</span>
+    <p>L'urna \(U_1\) contiene <strong>25 palline bianche e 15 rosse</strong> (40 in tutto),
+    mentre l'urna \(U_2\) ne contiene <strong>20 bianche e 20 rosse</strong> (40 in tutto).</p>
+    <p>È più facile che <em>estraendo tre palline contemporaneamente da \(U_1\) siano tutte bianche</em>
+    oppure che <em>estraendone due da \(U_2\) siano tutte e due rosse</em>?</p>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h39')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s39')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h39">
+      Calcola le due probabilità separatamente usando \(\binom{n}{k}\):<br>
+      \(P_1 = \dfrac{\binom{25}{3}}{\binom{40}{3}}\) e \(P_2 = \dfrac{\binom{20}{2}}{\binom{40}{2}}\)
+    </div>
+    <div class="panel panel-sol" id="s39">
+      \[P_1 = \frac{\binom{25}{3}}{\binom{40}{3}} = \frac{2300}{9880} = \frac{115}{494} \approx 23{,}3\%\]
+      \[P_2 = \frac{\binom{20}{2}}{\binom{40}{2}} = \frac{190}{780} = \frac{19}{78} \approx 24{,}4\%\]
+
+      <table class="cmp-table">
+        <tr><th>Evento</th><th>Probabilità</th><th>≈</th></tr>
+        <tr><td>3 bianche da \(U_1\)</td><td>\(115/494\)</td><td>23,3%</td></tr>
+        <tr class="cmp-winner"><td>2 rosse da \(U_2\)</td><td>\(19/78\)</td><td>24,4% 🏆</td></tr>
+      </table>
+      È più probabile estrarre <strong>entrambe rosse da \(U_2\)</strong>.
+    </div>
+  </div>
+
+  <!-- Es. 41 -->
+  <div class="ez">
+    <span class="ez-num">Es. 41</span>
+    <span class="stars">★★☆</span>
+    <p>Una scatola contiene <strong>12 palline bianche, 13 rosse e 5 verdi</strong> (30 in tutto).
+    Si estraggono <strong>contemporaneamente due palline</strong>. Calcola la probabilità che siano:</p>
+    <ul class="sub-list">
+      <li data-l="a.">entrambe rosse;</li>
+      <li data-l="b.">almeno una bianca;</li>
+      <li data-l="c.">una sola bianca;</li>
+      <li data-l="d.">nessuna verde.</li>
+    </ul>
+
+    <div class="dsa-note">
+      <strong>📌 Totale:</strong> \(\binom{30}{2} = 435\) coppie possibili.<br>
+      Per b. usa il complementare: «almeno una bianca» = 1 − «nessuna bianca».
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h41')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s41')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h41">
+      <strong>a.</strong> \(\binom{13}{2}/435\)<br>
+      <strong>b.</strong> \(1 - P(\text{no bianche}) = 1 - \binom{18}{2}/435\)<br>
+      <strong>c.</strong> \(\binom{12}{1}\cdot\binom{18}{1}/435\)<br>
+      <strong>d.</strong> «nessuna verde» = entrambe da {bianche ∪ rosse} = \(\binom{25}{2}/435\)
+    </div>
+    <div class="panel panel-sol" id="s41">
+      Totale: \(\binom{30}{2}=435\).<br><br>
+      <div class="ans-grid">
+        <div class="ans-cell"><small>a. Entrambe rosse</small><strong>\(\dfrac{26}{145}\)</strong></div>
+        <div class="ans-cell"><small>b. ≥1 bianca</small><strong>\(\dfrac{94}{145}\)</strong></div>
+        <div class="ans-cell"><small>c. Solo 1 bianca</small><strong>\(\dfrac{72}{145}\)</strong></div>
+        <div class="ans-cell"><small>d. No verde</small><strong>\(\dfrac{20}{29}\)</strong></div>
+      </div>
+      <strong>a.</strong> \(\binom{13}{2}=78 \Rightarrow \frac{78}{435}=\frac{26}{145}\)<br>
+      <strong>b.</strong> No bianche: \(\binom{18}{2}=153 \Rightarrow P=1-\frac{153}{435}=\frac{282}{435}=\frac{94}{145}\)<br>
+      <strong>c.</strong> \(12\cdot18=216 \Rightarrow \frac{216}{435}=\frac{72}{145}\)<br>
+      <strong>d.</strong> \(\binom{25}{2}=300 \Rightarrow \frac{300}{435}=\frac{20}{29}\)
+    </div>
+  </div>
+
+  <!-- Es. 43 -->
+  <div class="ez">
+    <span class="ez-num">Es. 43</span>
+    <span class="stars">★☆☆</span>
+    <p>Da un mazzo di <strong>40 carte napoletane</strong> se ne pescano <strong>due con reimmissione</strong>.
+    Calcola la probabilità che almeno una delle due carte sia una <em>figura</em>
+    (fante, cavallo, re — 12 figure in tutto).</p>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h43')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s43')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h43">
+      Usa il complementare: «almeno una figura» = 1 − «nessuna figura».<br>
+      \(P(\text{non figura}) = \dfrac{28}{40} = \dfrac{7}{10}\)
+    </div>
+    <div class="panel panel-sol" id="s43">
+      \(P(\text{no figura}) = \dfrac{28}{40}=\dfrac{7}{10}\)
+      \[P(\text{no figura nelle 2 estrazioni}) = \left(\tfrac{7}{10}\right)^2 = \frac{49}{100}\]
+      \[P(\text{almeno una figura}) = 1 - \frac{49}{100} = \boxed{\frac{51}{100} = 0{,}51}\]
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SEZIONE C: ESERCIZIO GUIDATO — DISPOSIZIONI
+============================================================ -->
+<section id="s3">
+  <div class="sec-hdr"><div class="sec-num">C</div><h2>Esercizio guidato — Disposizioni</h2></div>
+
+  <div class="ez">
+    <span class="ez-num guida">Es. 35</span>
+    <span style="background:#e67e22;color:#fff;border-radius:12px;padding:.1em .6em;font-size:.75em;font-weight:700;">GUIDA</span>
+    <span class="stars" style="margin-left:.3em;">★★★</span>
+
+    <p style="margin-top:.7em;">Un'urna contiene <strong>dieci palline numerate da 1 a 10</strong>.
+    Calcoliamo la probabilità che, estraendo consecutivamente 2 palline
+    <em>con reimmissione</em>, si abbiano <strong>due numeri primi</strong> (evento \(E\)).</p>
+
+    <div class="hl">
+      <strong>Numeri primi tra 1 e 10:</strong> \(\{2, 3, 5, 7\}\) — sono 4.
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-sol" onclick="tog('s35_0')">📖 Soluzione guidata (parte principale)</button>
+    </div>
+    <div class="panel panel-sol" id="s35_0">
+      <strong>Casi possibili</strong> (disposizioni con ripetizione di 10 elementi presi 2 a 2):
+      \[D_{10,2}^R = 10^2 = 100\]
+      <strong>Casi favorevoli</strong> (due dei quattro numeri primi, con ripetizione):
+      \[D_{4,2}^R = 4^2 = 16\]
+      \[P(E) = \frac{16}{100} = \boxed{\frac{4}{25}}\]
+    </div>
+
+    <hr style="margin:1em 0; border:none; border-top:1px dashed var(--bdr);">
+
+    <p>Risolvi ora le seguenti varianti:</p>
+
+    <ul class="sub-list">
+      <li data-l="a.">Estraendo consecutivamente 2 palline <strong>senza reimmissione</strong>,
+        calcola \(P(F) =\) P(entrambe prime).</li>
+      <li data-l="b.">Estraendo consecutivamente <strong>3 palline senza reimmissione</strong>,
+        calcola \(P(H) =\) P(tutte con valore minore di 5). I valori minori di 5 sono \(\{1,2,3,4\}\).</li>
+      <li data-l="c.">Estraendo 3 palline senza reimmissione, calcola la probabilità che
+        <strong>esattamente 2 abbiano valore minore di 5</strong> e la terza abbia valore \(\geq 5\).</li>
+    </ul>
+
+    <div class="dsa-note">
+      <strong>📌 Promemoria formule (DSA):</strong><br>
+      <strong>Con reimmissione</strong> (disposizioni con ripetizione): \(D_{n,k}^R = n^k\)<br>
+      <strong>Senza reimmissione</strong> (disposizioni semplici): \(D_{n,k} = n \cdot (n{-}1) \cdots (n{-}k{+}1)\)
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h35')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s35')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h35">
+      <strong>a.</strong> Senza reimm.: \(D_{10,2}=10\cdot9=90\) totali, \(D_{4,2}=4\cdot3=12\) favorevoli.<br>
+      <strong>b.</strong> Senza reimm.: \(D_{10,3}=720\) totali, \(D_{4,3}=24\) favorevoli.<br>
+      <strong>c.</strong> Scegli quale delle 3 posizioni ha il numero \(\geq5\): \(\binom{3}{1}=3\) modi.
+      Poi 2 numeri in ordine da \(\{1,2,3,4\}\): \(D_{4,2}=12\). Poi 1 numero da \(\{5,…,10\}\): 6 scelte.
+    </div>
+    <div class="panel panel-sol" id="s35">
+      <strong>a.</strong>
+      \[D_{10,2}=90 \;;\quad D_{4,2}=12 \;\Rightarrow\; P(F)=\frac{12}{90}=\boxed{\frac{2}{15}}\]
+
+      <strong>b.</strong> Valori &lt; 5: \(\{1,2,3,4\}\)
+      \[D_{10,3}=10\cdot9\cdot8=720 \;;\quad D_{4,3}=4\cdot3\cdot2=24 \;\Rightarrow\; P(H)=\frac{24}{720}=\boxed{\frac{1}{30}}\]
+
+      <strong>c.</strong> Casi totali: \(D_{10,3}=720\).<br>
+      Casi favorevoli (2 numeri da \(\{1,2,3,4\}\) + 1 da \(\{5,6,7,8,9,10\}\), con ordine):
+      \[\binom{3}{1}\cdot D_{4,2}\cdot 6 = 3\cdot12\cdot6 = 216\]
+      \[P = \frac{216}{720} = \boxed{\frac{3}{10}}\]
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SEZIONE D: DADI E MONETE
+============================================================ -->
+<section id="s4">
+  <div class="sec-hdr"><div class="sec-num">D</div><h2>Dadi e monete</h2></div>
+
+  <!-- Es. 36 -->
+  <div class="ez">
+    <span class="ez-num">Es. 36</span>
+    <span class="stars">★☆☆</span>
+    <p>Si lancia un dado <strong>tre volte</strong>. Calcola la probabilità degli eventi:</p>
+    <ul class="sub-list">
+      <li data-l="A =">«non esce mai il 4»;</li>
+      <li data-l="B =">«esce il 4 almeno una volta».</li>
+    </ul>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h36')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s36')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h36">
+      A ogni lancio: \(P(\text{non 4}) = \dfrac{5}{6}\).<br>
+      I tre lanci sono indipendenti. B è il complementare di A.
+    </div>
+    <div class="panel panel-sol" id="s36">
+      \[P(A) = \left(\tfrac{5}{6}\right)^3 = \boxed{\dfrac{125}{216} \approx 57{,}9\%}\]
+      \[P(B) = 1 - P(A) = 1 - \dfrac{125}{216} = \boxed{\dfrac{91}{216} \approx 42{,}1\%}\]
+    </div>
+  </div>
+
+  <!-- Es. 38 -->
+  <div class="ez">
+    <span class="ez-num">Es. 38</span>
+    <span class="stars">★★☆</span>
+    <p>Si gettano <strong>contemporaneamente due dadi</strong>. Calcola la probabilità che le due facce:</p>
+    <ul class="sub-list">
+      <li data-l="a.">siano due numeri uguali;</li>
+      <li data-l="b.">siano due numeri dispari;</li>
+      <li data-l="c.">siano due numeri primi;</li>
+      <li data-l="d.">siano un numero pari e l'altro dispari.</li>
+    </ul>
+
+    <div class="dsa-note">
+      <strong>📌 Spazio campionario:</strong> 36 coppie ordinate \((d_1, d_2)\).<br>
+      Numeri dispari in \(\{1,…,6\}\): \(\{1,3,5\}\) — Numeri primi: \(\{2,3,5\}\) — Numeri pari: \(\{2,4,6\}\)
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h38')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s38')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h38">
+      Totale = 36.<br>
+      <strong>a.</strong> Coppie (1,1),(2,2),…,(6,6) = 6<br>
+      <strong>b.</strong> Primo dispari × Secondo dispari = 3×3 = 9<br>
+      <strong>c.</strong> Primo primo × Secondo primo = 3×3 = 9<br>
+      <strong>d.</strong> (pari,dispari) + (dispari,pari) = 3×3 + 3×3 = 18
+    </div>
+    <div class="panel panel-sol" id="s38">
+      <div class="ans-grid">
+        <div class="ans-cell"><small>a. Uguali</small><strong>\(\dfrac{6}{36}=\dfrac{1}{6}\)</strong></div>
+        <div class="ans-cell"><small>b. Entrambi dispari</small><strong>\(\dfrac{9}{36}=\dfrac{1}{4}\)</strong></div>
+        <div class="ans-cell"><small>c. Entrambi primi</small><strong>\(\dfrac{9}{36}=\dfrac{1}{4}\)</strong></div>
+        <div class="ans-cell"><small>d. Uno pari + uno dispari</small><strong>\(\dfrac{18}{36}=\dfrac{1}{2}\)</strong></div>
+      </div>
+      <strong>a.</strong> Uguali: 6 coppie su 36 → \(\frac{1}{6}\)<br>
+      <strong>b.</strong> Dispari∈\{1,3,5\}: \(3\times3=9\) → \(\frac{1}{4}\)<br>
+      <strong>c.</strong> Primi∈\{2,3,5\}: \(3\times3=9\) → \(\frac{1}{4}\)<br>
+      <strong>d.</strong> Pari×Dispari + Dispari×Pari: \(3\times3+3\times3=18\) → \(\frac{1}{2}\)
+    </div>
+  </div>
+
+  <!-- Es. 44 -->
+  <div class="ez">
+    <span class="ez-num">Es. 44</span>
+    <span class="stars">★☆☆</span>
+    <p>Lanciando <strong>4 dadi</strong>, calcola la probabilità che:</p>
+    <ul class="sub-list">
+      <li data-l="a.">abbiano tutte le facce uguali (escano tutti 4 lo stesso numero);</li>
+      <li data-l="b.">abbiano tutti e 4 il numero 2.</li>
+    </ul>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h44')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s44')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h44">
+      Casi totali: \(6^4 = 1296\).<br>
+      <strong>a.</strong> I gruppi "tutti uguali" sono: (1,1,1,1), (2,2,2,2), …, (6,6,6,6) = 6 casi.<br>
+      <strong>b.</strong> Solo (2,2,2,2) = 1 caso.
+    </div>
+    <div class="panel panel-sol" id="s44">
+      Casi totali: \(6^4=1296\).<br>
+      <strong>a.</strong> \(P = \dfrac{6}{1296} = \boxed{\dfrac{1}{216}}\)<br><br>
+      <strong>b.</strong> \(P = \dfrac{1}{1296} = \boxed{\dfrac{1}{1296}}\)
+    </div>
+  </div>
+
+  <!-- Es. 45 -->
+  <div class="ez">
+    <span class="ez-num">Es. 45</span>
+    <span class="stars">★★☆</span>
+    <p>Si lancia <strong>consecutivamente un dado due volte</strong>. Calcola la probabilità che le due facce:</p>
+    <ul class="sub-list">
+      <li data-l="a.">abbiano la somma dei punteggi uguale a 9;</li>
+      <li data-l="b.">abbiano la somma dei punteggi maggiore di 9;</li>
+      <li data-l="c.">siano entrambe divisori di 6.</li>
+    </ul>
+
+    <div class="dsa-note">
+      <strong>📌 Divisori di 6:</strong> i numeri che dividono esattamente 6 sono \(\{1, 2, 3, 6\}\).
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h45')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s45')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h45">
+      Totale = 36 coppie.<br>
+      <strong>a.</strong> Coppie con somma 9: (3,6),(4,5),(5,4),(6,3) = 4<br>
+      <strong>b.</strong> Somma 10: 3 coppie; somma 11: 2; somma 12: 1 → totale 6<br>
+      <strong>c.</strong> Divisori di 6 = \(\{1,2,3,6\}\): 4 valori → \(4\times4=16\) coppie
+    </div>
+    <div class="panel panel-sol" id="s45">
+      <div class="ans-grid">
+        <div class="ans-cell"><small>a. Somma = 9</small><strong>\(\dfrac{4}{36}=\dfrac{1}{9}\)</strong></div>
+        <div class="ans-cell"><small>b. Somma &gt; 9</small><strong>\(\dfrac{6}{36}=\dfrac{1}{6}\)</strong></div>
+        <div class="ans-cell" style="grid-column:span 2;"><small>c. Entrambi divisori di 6</small><strong>\(\dfrac{16}{36}=\dfrac{4}{9}\)</strong></div>
+      </div>
+      <strong>a.</strong> \(\{(3,6),(4,5),(5,4),(6,3)\}\): 4 coppie → \(\frac{1}{9}\)<br>
+      <strong>b.</strong> Somme 10,11,12: \(3+2+1=6\) coppie → \(\frac{1}{6}\)<br>
+      <strong>c.</strong> Divisori di 6 = \(\{1,2,3,6\}\): \(4\times4=16\) coppie → \(\frac{4}{9}\)
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SEZIONE E: PROBLEMI DI MATEMATICA E REALTÀ
+============================================================ -->
+<section id="s5">
+  <div class="sec-hdr"><div class="sec-num">E</div><h2>Problemi di matematica e realtà</h2></div>
+
+  <!-- Es. 46 -->
+  <div class="ez">
+    <span class="ez-num realta">Es. 46</span>
+    <span class="stars">★★☆</span>
+    <p>In un gruppo di <strong>5 amici</strong> ci sono 2 maschi e 3 femmine.
+    Per fare una foto di gruppo si siedono casualmente su una fila.
+    Qual è la probabilità che <strong>i due ragazzi siano alle estremità della fila</strong>?</p>
+
+    <div class="dsa-note">
+      <strong>📌 Imposta il problema:</strong><br>
+      Totale: quanti modi ci sono di disporre 5 persone in fila? → \(5!\)<br>
+      Favorevoli: i 2 maschi occupano i 2 posti alle estremità (posizione 1 e 5).
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h46')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s46')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h46">
+      I posti alle estremità sono 2: i maschi possono occuparli in \(2! = 2\) modi.<br>
+      Le 3 femmine si dispongono nei 3 posti centrali in \(3! = 6\) modi.<br>
+      Casi favorevoli = \(2! \times 3!\)
+    </div>
+    <div class="panel panel-sol" id="s46">
+      Casi totali: \(5! = 120\)<br>
+      Casi favorevoli: i 2 maschi alle estremità (\(2!\) modi) × le 3 femmine nel centro (\(3!\) modi):
+      \[n_{\text{fav}} = 2! \cdot 3! = 2 \cdot 6 = 12\]
+      \[P = \frac{12}{120} = \boxed{\frac{1}{10}}\]
+    </div>
+  </div>
+
+  <!-- Es. 47 -->
+  <div class="ez">
+    <span class="ez-num realta">Es. 47</span>
+    <span class="stars">★★☆</span>
+    <p>Giacomo prende un viaggio in treno in uno scompartimento con
+    <strong>9 posti</strong>, dei quali <strong>2 sono vicini al finestrino</strong>.
+    Sapendo che <strong>3 posti sono già occupati casualmente</strong>,
+    qual è la probabilità che a Giacomo capiti un posto vicino al finestrino?</p>
+
+    <div class="dsa-note">
+      <strong>📌 Argomento di simmetria:</strong> se tutti i posti sono equiprobabili per Giacomo,
+      la probabilità che gli capiti uno dei 2 posti al finestrino è semplicemente 2/9,
+      indipendentemente da chi ha già scelto prima di lui.
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h47')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s47')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h47">
+      Per <em>simmetria</em>, ogni posto è ugualmente probabile per ciascuna delle 4 persone
+      (3 già sedute + Giacomo). Giacomo si trova quindi in uno dei 9 posti con uguale probabilità.
+    </div>
+    <div class="panel panel-sol" id="s47">
+      <strong>Argomento di simmetria:</strong> poiché sia i 3 posti occupati che il posto di Giacomo
+      sono scelti uniformemente a caso, ogni posto ha uguale probabilità di essere occupato da Giacomo.
+      \[P(\text{finestrino}) = \frac{2}{9}\]
+      <small style="color:var(--lt);">Verifica analitica: condizionando su quanti posti al finestrino risultano occupati dagli altri 3,
+      si ottiene lo stesso risultato: \(\frac{35}{84}\cdot\frac{2}{6}+\frac{42}{84}\cdot\frac{1}{6}+\frac{7}{84}\cdot0 = \frac{2}{9}\).</small>
+    </div>
+  </div>
+
+  <!-- Es. 48 -->
+  <div class="ez">
+    <span class="ez-num realta">Es. 48</span>
+    <span class="stars">★☆☆</span>
+    <p>Una raffica di vento ha sparso a terra i <strong>10 fogli</strong> degli appunti di Carlotta.
+    Raccogliendoli come capita, qual è la probabilità che siano <strong>nell'ordine corretto</strong>?</p>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h48')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s48')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h48">
+      Totale: modi di ordinare 10 fogli = \(10!\). Un solo ordine è quello corretto.
+    </div>
+    <div class="panel panel-sol" id="s48">
+      \[P = \frac{1}{10!} = \frac{1}{3\,628\,800} \approx 0{,}000028\%\]
+      Un'eventualità quasi impossibile!
+    </div>
+  </div>
+
+  <!-- Es. 49 -->
+  <div class="ez">
+    <span class="ez-num realta">Es. 49</span>
+    <span class="stars">★★☆</span>
+    <p>Giovanni ha <strong>12 libri di scuola</strong>. Una mattina si sveglia tardi e,
+    nella fretta, prende i primi <strong>3 libri</strong> che gli capitano sotto mano.
+    Qual è la probabilità che tra questi ci sia <strong>il libro di matematica</strong>?</p>
+
+    <div class="dsa-note">
+      <strong>📌 Strategia:</strong> è più semplice calcolare P(mat NON inclusa) e poi fare 1 − P.
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h49')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s49')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h49">
+      \(P(\text{mat inclusa}) = 1 - P(\text{mat non inclusa})\)<br>
+      \(P(\text{mat non inclusa}) = \dfrac{\binom{11}{3}}{\binom{12}{3}}\) (scelgo 3 dagli altri 11)
+    </div>
+    <div class="panel panel-sol" id="s49">
+      \(\binom{12}{3}=220\), \(\binom{11}{3}=165\)
+      \[P(\text{mat non inclusa}) = \frac{165}{220} = \frac{3}{4}\]
+      \[P(\text{mat inclusa}) = 1 - \frac{3}{4} = \boxed{\frac{1}{4}}\]
+      In alternativa direttamente: \(\binom{11}{2}/\binom{12}{3} = 55/220 = 1/4\).
+    </div>
+  </div>
+
+  <!-- Es. 50 -->
+  <div class="ez">
+    <span class="ez-num realta">Es. 50</span>
+    <span class="stars">★★★</span>
+    <p><em>Buio in sala.</em> Vuoi prendere <strong>due posti nella decima fila</strong> del cinema.
+    La fila ha <strong>20 posti numerati dall'81 al 100</strong>.
+    Calcola la probabilità che:</p>
+    <ul class="sub-list">
+      <li data-l="a.">i due posti siano entrambi compresi tra il numero 91 e il 100;</li>
+      <li data-l="b.">i due posti siano vicini (numeri consecutivi).</li>
+    </ul>
+
+    <div class="dsa-note">
+      <strong>📌 Totale:</strong> Modi di scegliere 2 posti da 20 = \(\binom{20}{2} = 190\).<br>
+      <strong>Per b.:</strong> conta le coppie adiacenti in una fila di 20 posti (81-82, 82-83, …, 99-100).
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h50')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s50')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h50">
+      <strong>a.</strong> Posti 91–100 = 10 posti → \(\binom{10}{2}/\binom{20}{2}\)<br>
+      <strong>b.</strong> In una fila di 20 posti, le coppie adiacenti sono 19 (81-82, 82-83, …, 99-100).
+    </div>
+    <div class="panel panel-sol" id="s50">
+      Totale: \(\binom{20}{2}=190\)<br><br>
+      <strong>a.</strong> \(\binom{10}{2}=45 \;\Rightarrow\; P=\dfrac{45}{190}=\boxed{\dfrac{9}{38}\approx23{,}7\%}\)<br><br>
+      <strong>b.</strong> Coppie adiacenti (81-82, 82-83, …, 99-100) = <strong>19</strong>:
+      \[P = \frac{19}{190} = \boxed{\frac{1}{10}}\]
+    </div>
+  </div>
+
+  <!-- Es. microscopi -->
+  <div class="ez">
+    <span class="ez-num realta">Es. 51</span>
+    <span class="stars">★★★</span>
+    <p>Nel laboratorio di scienze ci sono <strong>25 microscopi</strong>, di cui <strong>2 difettosi</strong>.
+    Ognuno dei <strong>21 studenti della 4ª A</strong> sceglie un microscopio a caso (senza rimettere).
+    Qual è la probabilità che <strong>nessuno scelga un microscopio difettoso</strong>?</p>
+
+    <div class="dsa-note">
+      <strong>📌 Schema:</strong> 25 microscopi, 23 funzionanti, 2 difettosi. 21 studenti scelgono in fila, ciascuno un microscopio diverso.
+      I casi totali sono le disposizioni di 21 oggetti scelti tra 25 (ordine conta perché ogni studente è diverso).
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h51')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s51')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h51">
+      Casi totali: \(D_{25,21} = \dfrac{25!}{4!}\)<br>
+      Casi favorevoli (nessun difettoso): \(D_{23,21} = \dfrac{23!}{2!}\)<br>
+      Molti fattori si semplificano nel rapporto!
+    </div>
+    <div class="panel panel-sol" id="s51">
+      \[P = \frac{D_{23,21}}{D_{25,21}} = \frac{23!/2!}{25!/4!} = \frac{23! \cdot 4!}{25! \cdot 2!} = \frac{4 \cdot 3}{25 \cdot 24} = \frac{12}{600} = \boxed{\dfrac{1}{50}}\]
+      Cioè solo il 2% di probabilità che tutti e 21 usino microscopi funzionanti!
+    </div>
+  </div>
+
+  <!-- Es. scuola arte -->
+  <div class="ez">
+    <span class="ez-num realta">Es. 52</span>
+    <span class="stars">★★★</span>
+    <p>In una scuola <strong>120 alunni</strong> partecipano alla «Giornata dell'Arte»,
+    preparando lavori di vari generi. Calcola la probabilità che
+    <strong>i primi 3 classificati siano tutti alunni della 4ª C</strong>,
+    che partecipa con <strong>20 ragazzi</strong>.</p>
+
+    <div class="btn-wrap">
+      <button class="btn btn-hint" onclick="tog('h52')">💡 Suggerimento</button>
+      <button class="btn btn-sol"  onclick="tog('s52')">✅ Soluzione</button>
+    </div>
+    <div class="panel panel-hint" id="h52">
+      Poiché 1°, 2° e 3° posto sono distinti, si usano le <em>disposizioni semplici</em>.<br>
+      Casi totali: \(D_{120,3} = 120 \cdot 119 \cdot 118\)<br>
+      Favorevoli: \(D_{20,3} = 20 \cdot 19 \cdot 18\)
+    </div>
+    <div class="panel panel-sol" id="s52">
+      \[P = \frac{D_{20,3}}{D_{120,3}} = \frac{20\cdot19\cdot18}{120\cdot119\cdot118} = \frac{6840}{1\,685\,040} = \boxed{\frac{57}{14042} \approx 0{,}41\%}\]
+      Un risultato molto raro: meno di 1 probabilità su 200!
+    </div>
+  </div>
+
+</section>
+</main>
+
+<!-- ==============================
+     FOOTER
+============================== -->
+<footer>
+  <p>📐 Esercizi dal libro di testo · Probabilità e Calcolo Combinatorio · Pagine 1425–1427</p>
+  <p style="opacity:.6;margin-top:.3em;">Classe 5ª — Istituto Tecnico (Informatico &amp; Meccanico) · A.S. 2025–2026</p>
+</footer>
+
+
+<!-- ==============================
+     JAVASCRIPT
+============================== -->
+<script>
+  /* toggle pannelli */
+  function tog(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('show');
+    if (el.classList.contains('show') && window.MathJax)
+      MathJax.typesetPromise([el]);
+  }
+
+  /* scelta multipla */
+  function checkMC(gridId, clicked, result) {
+    const grid = document.getElementById(gridId);
+    // resetta stato precedente
+    grid.querySelectorAll('.mc-opt').forEach(o => o.classList.remove('correct','wrong'));
+    clicked.classList.add(result);
+    if (result === 'correct') {
+      clicked.innerHTML += ' ✓';
+    } else {
+      clicked.innerHTML += ' ✗';
+      // evidenzia quella corretta dopo un istante
+      setTimeout(() => {
+        const all = grid.querySelectorAll('.mc-opt');
+        // trova quella corretta dalla struttura: è quella con onclick='..correct..'
+        all.forEach(o => {
+          if (o.getAttribute('onclick') && o.getAttribute('onclick').includes("'correct'"))
+            o.classList.add('revealed-correct');
+        });
+      }, 500);
+    }
+  }
+
+  function revealMC(gridId, solId) {
+    const grid = document.getElementById(gridId);
+    grid.querySelectorAll('.mc-opt').forEach(o => {
+      if (o.getAttribute('onclick') && o.getAttribute('onclick').includes("'correct'"))
+        o.classList.add('revealed-correct');
+    });
+    const sol = document.getElementById(solId);
+    sol.classList.add('show');
+    if (window.MathJax) MathJax.typesetPromise([sol]);
+  }
+</script>
+
+</body>
+</html>
